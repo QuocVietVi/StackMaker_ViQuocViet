@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 8323405745044064447}
   m_Layer: 0
   m_Name: Stop Point
-  m_TagString: Untagged
+  m_TagString: StopPoint
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -28,7 +28,7 @@ Transform:
   m_GameObject: {fileID: 454186421822176546}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -7.6, y: -9.4, z: 37.3}
-  m_LocalScale: {x: 7.724108, y: 0.5, z: 7.2405}
+  m_LocalScale: {x: 6, y: 0.5, z: 6}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -92,8 +92,8 @@ BoxCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 454186421822176546}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 0.076278575, y: 1, z: 0.034139182}
+  m_Center: {x: 0.012053372, y: 0, z: 0.027469192}
