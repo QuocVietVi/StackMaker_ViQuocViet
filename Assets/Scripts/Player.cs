@@ -198,9 +198,11 @@ public class Player : MonoBehaviour
         UpdateBrick();
     }
 
-    public void UnBrick(GameObject brick)
+    public void UnBrick(GameObject brick, GameObject unBrick)
     {
-        brick.transform.parent = null;
+        brick.transform.SetParent(null);
+        brick.transform.position = new Vector3(unBrick.transform.position.x, unBrick.transform.position.y, unBrick.transform.position.z);
+        
         brickList.Remove(brick);
         UpdateBrick();
     }

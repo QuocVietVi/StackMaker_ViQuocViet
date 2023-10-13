@@ -18,9 +18,12 @@ public class UnBrick : MonoBehaviour
     {
         if (other.tag == "Player")
         {
-            player.UnBrick(brickOnHand.brick);
-            Instantiate(brickOnHand.brick, gameObject.transform.position,gameObject.transform.rotation);
+            Destroy(brickOnHand.collider);
+            player.UnBrick(brickOnHand.brick, unBrick);
+            
+            //Instantiate(brickOnHand.brick, gameObject.transform.position,gameObject.transform.rotation);
             unBrick.SetActive(false);
+            
         }
     }
 }
