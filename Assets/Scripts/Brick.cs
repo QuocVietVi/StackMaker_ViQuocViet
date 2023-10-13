@@ -2,10 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BrickManager : MonoBehaviour
+public class Brick : MonoBehaviour
 {
     [SerializeField] private Player player;
-
+    public GameObject brick;
     private void Start()
     {
         player = GameObject.FindObjectOfType<Player>();
@@ -15,7 +15,7 @@ public class BrickManager : MonoBehaviour
     {
         if (other.tag == "Player")
         {
-            player.CollectBrick(gameObject);
+            player.CollectBrick(brick);
         }
     }
 }

@@ -12,9 +12,6 @@ public class Player : MonoBehaviour
     [SerializeField] private GameObject spawnPoint;
     [SerializeField] private List<GameObject> brickList;
     [SerializeField] private float distance;
-    //[SerializeField] private Transform playerTransform;
-    //[SerializeField] private float x1, x2;
-    //[SerializeField] private float y1, y2;
     public LayerMask layerBrick;
 
     private float horizontal, vertical;
@@ -67,8 +64,6 @@ public class Player : MonoBehaviour
                     direct = Direct.Forward;
                     gameObject.transform.rotation = Quaternion.Euler(new Vector3(0, 0, 0));
                     endPoint = Vector3.forward;
-                   // CheckEndPoint(Vector3.forward);
-                    //Debug.DrawRay(transform.position, Vector3.forward * distance, Color.red);
                     speed = 10;
                 }
                 //vuot xuong duoi
@@ -77,8 +72,6 @@ public class Player : MonoBehaviour
                     direct = Direct.Back;
                     gameObject.transform.rotation = Quaternion.Euler(new Vector3(0, 180, 0));
                     endPoint= Vector3.back;
-                    //CheckEndPoint(Vector3.back);
-                    //Debug.DrawRay(transform.position, Vector3.back * distance, Color.red);
                     speed = 10;
 
 
@@ -92,8 +85,6 @@ public class Player : MonoBehaviour
                     direct = Direct.Right;
                     gameObject.transform.rotation = Quaternion.Euler(new Vector3(0, 90, 0));
                     endPoint = Vector3.right;
-                    //CheckEndPoint(Vector3.right);
-                    //Debug.DrawRay(transform.position, Vector3.right * distance, Color.red);
                     speed = 10;
 
                 }
@@ -103,8 +94,6 @@ public class Player : MonoBehaviour
                     direct = Direct.Left;
                     gameObject.transform.rotation = Quaternion.Euler(new Vector3(0, -90, 0));
                     endPoint = Vector3.left;
-                    //CheckEndPoint(Vector3.left);
-                    //Debug.DrawRay(transform.position, Vector3.left * distance, Color.red);
                     speed = 10;
                 }
             }
@@ -206,6 +195,13 @@ public class Player : MonoBehaviour
         {
             brick.name = $"Brick On Hand ({i})" ;
         }
+        UpdateBrick();
+    }
+
+    public void UnBrick(GameObject brick)
+    {
+        brick.transform.parent = null;
+        brickList.Remove(brick);
         UpdateBrick();
     }
 
