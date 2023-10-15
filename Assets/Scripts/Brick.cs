@@ -2,21 +2,27 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
+public enum Colors { GREEN, ORANGE }
 public class Brick : MonoBehaviour
 {
-    [SerializeField] private Player player;
-    public GameObject brick;
-    public Collider collider;
+
+    public Colors color;
     private void Start()
     {
-        player = GameObject.FindObjectOfType<Player>();
+        
     }
 
-    private void OnTriggerEnter(Collider other)
+    //private void OnTriggerEnter(Collider other)
+    //{
+    //    if (other.tag == "Player")
+    //    {
+    //        Destroy(gameObject);
+    //    }
+    //}
+
+    public void RemoveBrickOnGround()
     {
-        if (other.tag == "Player")
-        {
-            player.CollectBrick(brick);
-        }
+        gameObject.SetActive(false);
     }
 }

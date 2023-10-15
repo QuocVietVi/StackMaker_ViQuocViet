@@ -9,8 +9,9 @@ public class Player : MonoBehaviour
 {
     //[SerializeField] private Rigidbody rb;
     [SerializeField] private float speed;
-    [SerializeField] private GameObject spawnPoint;
-    [SerializeField] private List<GameObject> brickList;
+    [SerializeField] private Brick _brick;
+    [SerializeField] private Brick spawnPoint;
+    [SerializeField] private List<Brick> brickList;
     [SerializeField] private float distance;
     public LayerMask layerBrick;
 
@@ -23,7 +24,7 @@ public class Player : MonoBehaviour
     //private int move;
     private void Start()
     {
-        isMoving = false;
+        _brick = GameObject.FindObjectOfType<Brick>();
     }
 
     private void Update()
@@ -64,7 +65,7 @@ public class Player : MonoBehaviour
                     direct = Direct.Forward;
                     gameObject.transform.rotation = Quaternion.Euler(new Vector3(0, 0, 0));
                     endPoint = Vector3.forward;
-                    speed = 10;
+                    speed = 20;
                 }
                 //vuot xuong duoi
                 else
@@ -72,7 +73,7 @@ public class Player : MonoBehaviour
                     direct = Direct.Back;
                     gameObject.transform.rotation = Quaternion.Euler(new Vector3(0, 180, 0));
                     endPoint= Vector3.back;
-                    speed = 10;
+                    speed = 20;
 
 
                 }
@@ -85,7 +86,7 @@ public class Player : MonoBehaviour
                     direct = Direct.Right;
                     gameObject.transform.rotation = Quaternion.Euler(new Vector3(0, 90, 0));
                     endPoint = Vector3.right;
-                    speed = 10;
+                    speed = 20;
 
                 }
                 //vuot sang trai
@@ -94,7 +95,7 @@ public class Player : MonoBehaviour
                     direct = Direct.Left;
                     gameObject.transform.rotation = Quaternion.Euler(new Vector3(0, -90, 0));
                     endPoint = Vector3.left;
-                    speed = 10;
+                    speed = 20;
                 }
             }
         }
@@ -185,11 +186,15 @@ public class Player : MonoBehaviour
    
 
 
-    public void CollectBrick(GameObject brick)
+    public void CollectBrick()
     {
-        //transform.position = new Vector3 (transform.position.x, transform.position.y + 1f, transform.position.z);
-        brick.transform.position = new Vector3(spawnPoint.transform.position.x, spawnPoint.transform.position.y + 2f, spawnPoint.transform.position.z);
-        brick.transform.SetParent(transform);
+        
+        Brick brick = Instantiate(_brick, new Vector3(spawnPoint.transform.position.x, spawnPoint.transform.position.y + 1.5f, spawnPoint.transform.position.z),transform.rotation, this.transform);
+        brick.transform.localScale = new Vector3(1.2f, 0.09f, 1.4f);
+        //if (brick.color == brickList[0].color)
+        //{
+        //    brick.RemoveBrickOnGround();
+        //}
         brickList.Add(brick);
         for(int i = 0; i < brickList.Count; i++)
         {
@@ -198,24 +203,56 @@ public class Player : MonoBehaviour
         UpdateBrick();
     }
 
-    public void UnBrick(GameObject brick, GameObject unBrick)
+    public void UnBrick()
     {
-        brick.transform.SetParent(null);
-        brick.transform.position = new Vector3(unBrick.transform.position.x, unBrick.transform.position.y, unBrick.transform.position.z);
-        
-        brickList.Remove(brick);
-        UpdateBrick();
+        int index = brickList.Count - 1;
+
+        if(index >= 0)
+        {
+            Brick brick = brickList[index];
+            brickList.Remove(brick);
+            //Destroy(brick.gameObject);
+            //brick.gameObject.SetActive(false);
+            brick.gameObject.tag = "Untagged";
+            brick.transform.parent = null;
+            brick.gameObject.SetActive(true);
+            brick.transform.position = new Vector3(gameObject.transform.position.x, gameObject.transform.position.y - 6f, gameObject.transform.position.z );
+            
+        }
+        //brick.transform.SetParent(null);
+        //brick.transform.position = new Vector3(unBrick.transform.position.x, unBrick.transform.position.y, unBrick.transform.position.z);
+
+        //UpdateBrick();
     }
 
     private void UpdateBrick()
     {
         spawnPoint = brickList[brickList.Count - 1];
     }
-    //private void OnTriggerEnter(Collider other)
-    //{
-    //    if (other.tag == "StopPoint")
-    //    {
-    //        rb.velocity = Vector3.zero;
-    //    }
-    //}
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.tag == "Brick")
+        {
+            if (brickList.Count > 0)
+            {
+                if(other.GetComponent<Brick>().color == brickList[0].color)
+                {
+                    other.GetComponent<Brick>().RemoveBrickOnGround() ;
+                    CollectBrick();
+                    
+                }
+            }
+            else
+            {
+                other.GetComponent<Brick>().RemoveBrickOnGround();
+                CollectBrick();
+            }
+        }
+
+        if (other.tag == "UnBrick")
+        {
+            UnBrick();
+        }
+
+    }
 }
