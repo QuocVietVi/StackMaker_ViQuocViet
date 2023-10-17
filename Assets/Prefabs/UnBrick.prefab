@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 1054534725456890356}
   m_Layer: 0
   m_Name: UnBrick
-  m_TagString: Untagged
+  m_TagString: UnBrick
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -26,7 +26,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6048714600479782234}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -0.6000004, y: -2.3000002, z: 95.5}
   m_LocalScale: {x: 7.724108, y: 1.47, z: 7.2405}
   m_ConstrainProportionsScale: 0
@@ -67,5 +67,3 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 89a15b89d94943846bd11d14860435e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 0}
-  unBrick: {fileID: 6048714600479782234}

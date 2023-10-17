@@ -3,7 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-public enum Colors { GREEN, ORANGE }
+public enum Colors 
+{ 
+    GREEN =0 , 
+    ORANGE =1
+}
 public class Brick : MonoBehaviour
 {
 

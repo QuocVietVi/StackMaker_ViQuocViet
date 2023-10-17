@@ -1,3 +1,4 @@
+using Palmmedia.ReportGenerator.Core.Reporting.Builders;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,39 +10,48 @@ public class Player : MonoBehaviour
 {
     //[SerializeField] private Rigidbody rb;
     [SerializeField] private float speed;
-    [SerializeField] private Brick _brick;
+    [SerializeField] private List<Brick> listBrickPrefab;
     [SerializeField] private Brick spawnPoint;
+    [SerializeField] private Brick sp;
     [SerializeField] private List<Brick> brickList;
     [SerializeField] private float distance;
+    [SerializeField] private Transform startPoint;
     public LayerMask layerBrick;
 
     private float horizontal, vertical;
     private Vector3 mouseUp, mouseDown;
-    private bool isMoving;
+    //private bool isLeft = false;
+    //private bool isRight = false;
+    //private bool isFwd = false;
+    //private bool isBack = false;
     private Vector3 endPoint;
+    private int currentColor;
 
 
     //private int move;
     private void Start()
     {
-        _brick = GameObject.FindObjectOfType<Brick>();
+        OnInit();
     }
 
     private void Update()
     {
 
-            if (Input.GetMouseButtonDown(0))
-            {
-                mouseDown = Input.mousePosition;
-            }
-            if (Input.GetMouseButtonUp(0))
-            {
-                mouseUp = Input.mousePosition;
-                GetDirect(mouseDown, mouseUp);
-            }
-        transform.Translate(Vector3.forward * speed * Time.deltaTime);
+        Move();
         CheckEndPoint(endPoint);
+        if (brickList.Count <= 0)
+        {
+            spawnPoint = sp;
+        }
 
+
+    }
+
+    private void OnInit()
+    {
+        speed = 0;
+        ClearBrick();
+        gameObject.transform.position = startPoint.position;
     }
 
     private Direct GetDirect(Vector3 mouseDown, Vector3 mouseUp)
@@ -65,7 +75,7 @@ public class Player : MonoBehaviour
                     direct = Direct.Forward;
                     gameObject.transform.rotation = Quaternion.Euler(new Vector3(0, 0, 0));
                     endPoint = Vector3.forward;
-                    speed = 20;
+                    speed = 50;
                 }
                 //vuot xuong duoi
                 else
@@ -73,7 +83,7 @@ public class Player : MonoBehaviour
                     direct = Direct.Back;
                     gameObject.transform.rotation = Quaternion.Euler(new Vector3(0, 180, 0));
                     endPoint= Vector3.back;
-                    speed = 20;
+                    speed = 50;
 
 
                 }
@@ -86,7 +96,7 @@ public class Player : MonoBehaviour
                     direct = Direct.Right;
                     gameObject.transform.rotation = Quaternion.Euler(new Vector3(0, 90, 0));
                     endPoint = Vector3.right;
-                    speed = 20;
+                    speed = 50;
 
                 }
                 //vuot sang trai
@@ -95,60 +105,14 @@ public class Player : MonoBehaviour
                     direct = Direct.Left;
                     gameObject.transform.rotation = Quaternion.Euler(new Vector3(0, -90, 0));
                     endPoint = Vector3.left;
-                    speed = 20;
+                    speed = 50;
                 }
             }
         }
         return direct;
     }
 
-    private Vector3 GetNextPoint(Direct direct)
-    {
-        RaycastHit hit;
-        Vector3 nextPoint = Vector3.zero;
-        Vector3 dir = Vector3.zero;
-
-        switch (direct)
-        {
-            case Direct.Forward:
-                dir = Vector3.forward;
-
-                break;
-            case Direct.Back:
-                dir = Vector3.back;
-
-                break;
-            case Direct.Right:
-                dir = Vector3.right;
-
-                break;
-            case Direct.Left:
-                dir = Vector3.left;
-
-                break;
-            case Direct.None:
-                break;
-            default:
-                break;
-   
-        }
-        for(int i = 1; i < 100; i++)
-        {
-            
-            if (Physics.Raycast(transform.position + dir *i + new Vector3(0,6,9), Vector3.down, out hit, 10f, layerBrick))
-            {
-                nextPoint = hit.collider.transform.position;
-
-            }
-            else
-            {
-                break;
-
-            }
-        }
-        return nextPoint;
-
-    }
+  
     private void CheckEndPoint(Vector3 vector)
     {
         Ray ray = new Ray(transform.position, vector);
@@ -169,37 +133,30 @@ public class Player : MonoBehaviour
     }
     private void Move()
     {
-        //horizontal = Input.GetAxisRaw("Horizontal");
-        //vertical = Input.GetAxisRaw("Vertical");
+        if (Input.GetMouseButtonDown(0))
+        {
+            mouseDown = Input.mousePosition;
+        }
+        if (Input.GetMouseButtonUp(0))
+        {
+            mouseUp = Input.mousePosition;
+            GetDirect(mouseDown, mouseUp);
+        }
+        transform.Translate(Vector3.forward * speed * Time.deltaTime);
 
-        //if (horizontal != 0)
-        //{
-        //    rb.velocity = new Vector3(horizontal * speed, 0, 0);
-        //}
-        //if (vertical != 0)
-        //{
-        //    rb.velocity = new Vector3(0, 0, vertical * speed);
-        //}
-       
     }
-
-   
-
 
     public void CollectBrick()
     {
-        
-        Brick brick = Instantiate(_brick, new Vector3(spawnPoint.transform.position.x, spawnPoint.transform.position.y + 1.5f, spawnPoint.transform.position.z),transform.rotation, this.transform);
+        currentColor = (int)brickList[0].color;
+        Brick brick = Instantiate(listBrickPrefab[currentColor], new Vector3(spawnPoint.transform.position.x, spawnPoint.transform.position.y + 1.5f, spawnPoint.transform.position.z), transform.rotation, this.transform);
         brick.transform.localScale = new Vector3(1.2f, 0.09f, 1.4f);
-        //if (brick.color == brickList[0].color)
-        //{
-        //    brick.RemoveBrickOnGround();
-        //}
+
         brickList.Add(brick);
-        for(int i = 0; i < brickList.Count; i++)
-        {
-            brick.name = $"Brick On Hand ({i})" ;
-        }
+        //for (int i = 0; i < brickList.Count; i++)
+        //{
+        //    brick.name = $"Brick On Hand ({i})";
+        //}
         UpdateBrick();
     }
 
@@ -207,7 +164,7 @@ public class Player : MonoBehaviour
     {
         int index = brickList.Count - 1;
 
-        if(index >= 0)
+        if (index >= 0)
         {
             Brick brick = brickList[index];
             brickList.Remove(brick);
@@ -216,43 +173,64 @@ public class Player : MonoBehaviour
             brick.gameObject.tag = "Untagged";
             brick.transform.parent = null;
             brick.gameObject.SetActive(true);
-            brick.transform.position = new Vector3(gameObject.transform.position.x, gameObject.transform.position.y - 6f, gameObject.transform.position.z );
-            
-        }
-        //brick.transform.SetParent(null);
-        //brick.transform.position = new Vector3(unBrick.transform.position.x, unBrick.transform.position.y, unBrick.transform.position.z);
+            brick.transform.position = new Vector3(gameObject.transform.position.x, gameObject.transform.position.y - 6f, gameObject.transform.position.z);
 
-        //UpdateBrick();
+        }
     }
 
+    private void ClearBrick()
+    {
+        for(int i = 0; i < brickList.Count; i++)
+        {
+            Destroy(brickList[i].gameObject);
+        }
+        brickList.Clear();
+    }
     private void UpdateBrick()
     {
         spawnPoint = brickList[brickList.Count - 1];
     }
     private void OnTriggerEnter(Collider other)
     {
-        if (other.tag == "Brick")
+
+        if (other.CompareTag(ConstantTag.BRICK))
         {
             if (brickList.Count > 0)
             {
-                if(other.GetComponent<Brick>().color == brickList[0].color)
+                currentColor = (int)brickList[0].color;
+                if (currentColor == (int)other.GetComponent<Brick>().color)
                 {
+                    
                     other.GetComponent<Brick>().RemoveBrickOnGround() ;
                     CollectBrick();
-                    
+
+                }
+                else
+                {
+                    return;
                 }
             }
             else
             {
                 other.GetComponent<Brick>().RemoveBrickOnGround();
-                CollectBrick();
+                Brick brick = Instantiate(listBrickPrefab[(int)other.GetComponent<Brick>().color], 
+                    new Vector3(spawnPoint.transform.position.x, spawnPoint.transform.position.y + 1.5f, spawnPoint.transform.position.z), transform.rotation, this.transform);
+                brick.transform.localScale = new Vector3(1.2f, 0.09f, 1.4f);
+                brickList.Add(brick);
             }
         }
 
-        if (other.tag == "UnBrick")
+        if (other.CompareTag(ConstantTag.UNBRICK))
         {
             UnBrick();
+            other.tag = "Untagged";
         }
 
+    }
+
+    public static class ConstantTag
+    {
+        public static string BRICK = "Brick";
+        public static string UNBRICK = "UnBrick";
     }
 }
