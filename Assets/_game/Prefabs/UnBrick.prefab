@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 6965644657172357184}
   - component: {fileID: 5042323536815857542}
   - component: {fileID: 7913638523642158224}
-  - component: {fileID: 1054534725456890356}
+  - component: {fileID: -8162285518517809120}
   m_Layer: 0
   m_Name: UnBrick
   m_TagString: UnBrick
@@ -55,7 +55,7 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1.0135667, y: 1, z: 1.0222883}
   m_Center: {x: -0.0027917796, y: 0, z: 0.0018245006}
---- !u!114 &1054534725456890356
+--- !u!114 &-8162285518517809120
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -67,3 +67,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 89a15b89d94943846bd11d14860435e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  unBrick: {fileID: 6048714600479782234}

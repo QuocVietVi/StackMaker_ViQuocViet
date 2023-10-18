@@ -9,6 +9,7 @@ public class LevelButtonAction : MonoBehaviour
     public Text lvText;
     public GameObject menuPanel;
     public GameObject player;
+
     public void SetOnClick(int id)
     {
         lvButton.onClick.AddListener(() =>
@@ -16,7 +17,6 @@ public class LevelButtonAction : MonoBehaviour
             SpawnMap(id);
         });
     }
-
     private void SpawnMap(int id)
     {
         GameObject map = Resources.Load<GameObject>(ConstantName.MAP_NAME + id);
@@ -31,7 +31,4 @@ public class LevelButtonAction : MonoBehaviour
     }
 
 }
-public static class ConstantName
-{
-    public static string MAP_NAME = "Map";
-}
+

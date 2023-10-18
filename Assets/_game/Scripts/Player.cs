@@ -16,6 +16,8 @@ public class Player : MonoBehaviour
     [SerializeField] private List<Brick> brickList;
     [SerializeField] private float distance;
     [SerializeField] private Transform startPoint;
+    [SerializeField] private GameObject victoryPanel, settingPanel;
+    //[SerializeField] private UnBrick unBrick;
     public LayerMask layerBrick;
 
     private float horizontal, vertical;
@@ -32,6 +34,7 @@ public class Player : MonoBehaviour
     private void Start()
     {
         OnInit();
+        
     }
 
     private void Update()
@@ -43,7 +46,11 @@ public class Player : MonoBehaviour
         {
             spawnPoint = sp;
         }
-
+        if (Input.GetKey(KeyCode.Escape))
+        {
+            speed = 0;
+            settingPanel.SetActive(true);
+        }
 
     }
 
@@ -52,6 +59,8 @@ public class Player : MonoBehaviour
         speed = 0;
         ClearBrick();
         gameObject.transform.position = startPoint.position;
+        //unBrick = GameObject.FindObjectOfType<UnBrick>();
+
     }
 
     private Direct GetDirect(Vector3 mouseDown, Vector3 mouseUp)
@@ -160,7 +169,7 @@ public class Player : MonoBehaviour
         UpdateBrick();
     }
 
-    public void UnBrick()
+    public void UnBrick(GameObject ub)
     {
         int index = brickList.Count - 1;
 
@@ -173,7 +182,10 @@ public class Player : MonoBehaviour
             brick.gameObject.tag = "Untagged";
             brick.transform.parent = null;
             brick.gameObject.SetActive(true);
-            brick.transform.position = new Vector3(gameObject.transform.position.x, gameObject.transform.position.y - 6f, gameObject.transform.position.z);
+            //brick.transform.position = new Vector3(gameObject.transform.position.x, gameObject.transform.position.y - 6f, gameObject.transform.position.z);
+            brick.transform.position = ub.transform.position;
+            brick.transform.SetParent(ub.transform);
+            //brick.transform.SetParent(unBrick.transform);
 
         }
     }
@@ -222,8 +234,16 @@ public class Player : MonoBehaviour
 
         if (other.CompareTag(ConstantTag.UNBRICK))
         {
-            UnBrick();
+            UnBrick(other.GetComponent<UnBrick>().unBrick);
             other.tag = "Untagged";
+        }
+
+        if (other.tag == "Finish" )
+        {
+            gameObject.SetActive(false);
+            //unBrick.gameObject.SetActive(false);
+            OnInit();
+            victoryPanel.SetActive(true);
         }
 
     }
@@ -232,5 +252,6 @@ public class Player : MonoBehaviour
     {
         public static string BRICK = "Brick";
         public static string UNBRICK = "UnBrick";
+        public static string FINISH = "Finish";
     }
 }

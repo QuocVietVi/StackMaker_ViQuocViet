@@ -3887,7 +3887,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1142418300666757376, guid: de7e3044c40b5a441b1b338c05389d47, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.509
+      value: 0.532
       objectReference: {fileID: 0}
     - target: {fileID: 1142418300666757376, guid: de7e3044c40b5a441b1b338c05389d47, type: 3}
       propertyPath: m_LocalPosition.z
@@ -3921,6 +3921,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8850395068381678971, guid: de7e3044c40b5a441b1b338c05389d47, type: 3}
+      propertyPath: m_IsTrigger
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9031360573684004293, guid: de7e3044c40b5a441b1b338c05389d47, type: 3}
+      propertyPath: map
+      value: 
+      objectReference: {fileID: 8753426945013739319}
     - target: {fileID: 9094053205153595157, guid: de7e3044c40b5a441b1b338c05389d47, type: 3}
       propertyPath: m_Name
       value: FinishBox
