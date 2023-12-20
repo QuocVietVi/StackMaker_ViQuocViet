@@ -124,7 +124,7 @@ public class Player : MonoBehaviour
   
     private void CheckEndPoint(Vector3 vector)
     {
-        Ray ray = new Ray(transform.position, vector);
+        Ray ray = new Ray(transform.position , vector);
         //Physics.Raycast(transform.position, Vector3.forward, distance);
         RaycastHit hit;
         Physics.Raycast(ray, out hit, distance);
@@ -132,7 +132,7 @@ public class Player : MonoBehaviour
 
         if (hit.transform != null)
         {
-            if (hit.collider.tag == "StopPoint")
+            if (hit.collider.CompareTag(ConstantTag.STOPPOINT))
             {
                 Debug.Log("End Point");
                 //rb.velocity = Vector3.zero;
@@ -253,5 +253,6 @@ public class Player : MonoBehaviour
         public static string BRICK = "Brick";
         public static string UNBRICK = "UnBrick";
         public static string FINISH = "Finish";
+        public static string STOPPOINT = "StopPoint";
     }
 }
